@@ -1,0 +1,41 @@
+import firebase from 'firebase';
+import 'firebase/firestore';
+
+const firebaseConfig = {
+  apiKey: 'AIzaSyDVcZ6Qr8qbQCzgMUCKNonWP6mUnr8FMf8',
+  authDomain: 'vue-fb-c9c24.firebaseapp.com',
+  databaseURL: 'https://vue-fb-c9c24.firebaseio.com',
+  projectId: 'vue-fb-c9c24',
+  storageBucket: 'vue-fb-c9c24.appspot.com',
+  messagingSenderId: '1063615651821',
+  appId: '1:1063615651821:web:c9f813962a0ddd33',
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+// firebase utils
+const db = firebase.firestore();
+const auth = firebase.auth();
+const currentUser = firebase.user;
+
+// date issue fix according to firebase
+const settings = {
+  timestampsInSnapshots: true,
+};
+db.settings(settings);
+
+// firebase collections
+const usersCollection = db.collection('users');
+const postsCollection = db.collection('posts');
+const commentsCollection = db.collection('comments');
+const likesCollection = db.collection('likes');
+
+export {
+  db,
+  auth,
+  currentUser,
+  usersCollection,
+  postsCollection,
+  commentsCollection,
+  likesCollection,
+};
