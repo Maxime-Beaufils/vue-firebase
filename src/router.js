@@ -8,7 +8,9 @@ import Settings from '@/components/Settings.vue';
 
 Vue.use(Router);
 
-export default new Router({
+
+const router = new Router({
+
   mode: 'history',
   routes: [
     {
@@ -38,3 +40,18 @@ export default new Router({
     },
   ],
 });
+
+router.beforeEach((to, from, next) => {
+  const requiresAuth = to.matched.some(path => path.meta.requiresAuth);
+  const currentUser = firebase.auth().currentUser;
+
+  if (requiresAuth && !currentUser) {
+    next('/login');
+  } else if (requiresAuth && currentUser) {
+    next();
+  } else {
+    next();
+  }
+});
+
+export default router;
