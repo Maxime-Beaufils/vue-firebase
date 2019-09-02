@@ -24,11 +24,11 @@
                     <button @click="login" class="button">se connecter</button>
 
                     <div class="extras">
-                        <a>mot de passe oublié</a>
+                        <a @click="togglePasswordReset">mot de passe oublié</a>
                         <a @click='toogleShowLoginForm'>Créer un compte</a>
                     </div>
                 </form>
-                <form v-else @submit.prevent>
+                <form v-if="!showLoginForm && !showForgotPassword" @submit.prevent>
                     <h1>C'est parti</h1>
 
                     <label for="name">Nom</label>
@@ -49,11 +49,31 @@
                         <a @click="toogleShowLoginForm">se connecter</a>
                     </div>
                 </form>
-                    <transition name="fade">
-                        <div v-if="errorMsg !== ''" class="error-msg">
-                            <p>{{ errorMsg }}</p>
+                 <form v-if="showForgotPassword" @submit.prevent class="password-reset">
+                    <div v-if="!passwordResetSuccess">
+                        <h1>Changer de mot de passe</h1>
+                        <p>Vous receverez un mail avec les instructions pour modifier votre mot de passe</p>
+
+                        <label for="email3">Email</label>
+                        <input v-model.trim="passwordForm.email" type="text" placeholder="votre@email.com" id="email3" />
+
+                        <button @click="resetPassword" class="button">envoyer</button>
+
+                        <div class="extras">
+                            <a @click="togglePasswordReset">Retourner à la page de connection</a>
                         </div>
-                    </transition>
+                    </div>
+                    <div v-else>
+                        <h1>Email envoyé</h1>
+                        <p>Vérifier vos emails</p>
+                        <button @click="togglePasswordReset" class="button">Retourner à la page de connection</button>
+                    </div>
+                </form>
+                <transition name="fade">
+                    <div v-if="errorMsg !== ''" class="error-msg">
+                        <p>{{ errorMsg }}</p>
+                    </div>
+                </transition>
             </div>
         </section>
     </div>
@@ -74,7 +94,12 @@
                     email:    "",
                     password: ""
                 },
+                passwordForm: {
+                    email: "",
+                },
                 showLoginForm : true,
+                showForgotPassword: false,
+                passwordResetSuccess: false,
                 performingRequest : false,
                 errorMsg : ""
             }
@@ -82,6 +107,16 @@
         methods: {
             toogleShowLoginForm() {
                 this.showLoginForm = !this.showLoginForm;
+            },
+            togglePasswordReset() {
+                 if (this.showForgotPassword) {
+                    this.showLoginForm = true
+                    this.showForgotPassword = false
+                    this.passwordResetSuccess = false
+                } else {
+                    this.showLoginForm = false
+                    this.showForgotPassword = true
+                }
             },
             login() {
                 this.performingRequest = true
@@ -121,6 +156,19 @@
                 })
 
             },
+            resetPassword() {
+                this.performingRequest = true
+
+                fb.auth.sendPasswordResetEmail(this.passwordForm.email).then(() => {
+                    this.performingRequest = false
+                    this.passwordResetSuccess = true
+                    this.passwordForm.email = ''
+                }).catch(err => {
+                    console.log(err)
+                    this.performingRequest = false
+                    this.errorMsg = err.message
+                })
+            },
         }
-    }
+    };
 </script>
