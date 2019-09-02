@@ -2,13 +2,13 @@ import firebase from 'firebase';
 import 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDVcZ6Qr8qbQCzgMUCKNonWP6mUnr8FMf8',
+  apiKey: process.env.VUE_APP_apiKey,
   authDomain: 'vue-fb-c9c24.firebaseapp.com',
   databaseURL: 'https://vue-fb-c9c24.firebaseio.com',
   projectId: 'vue-fb-c9c24',
   storageBucket: 'vue-fb-c9c24.appspot.com',
-  messagingSenderId: '1063615651821',
-  appId: '1:1063615651821:web:c9f813962a0ddd33',
+  messagingSenderId: process.env.VUE_APP_messagingSenderId,
+  appId: process.env.VUE_APP_appId,
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
