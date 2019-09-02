@@ -11,7 +11,7 @@
                 <p>Bienvenue sur l'application vue-app,<br /> 
                  propulsée avec Vue.js et Firebase. Projet de veille techno. </p>
             </div>
-            <div class="col2" :class="{ 'signup-form': !showLoginForm }">
+            <div class="col2" :class="{ 'signup-form': !showLoginForm && !showForgotPassword }">
                 <form v-if="showLoginForm" @submit.prevent>
                     <h1>Bon retour</h1>
 
@@ -138,7 +138,8 @@
                 fb.auth.createUserWithEmailAndPassword(this.signupForm.email, this.signupForm.password).then(user => {
                     this.$store.commit('setCurrentUser', user.user)
                     // create user obj
-                    fb.usersCollection.doc(user.uid).set({
+                    console.log(this.$store.state.currentUser.uid);
+                    fb.usersCollection.doc(this.$store.state.currentUser.uid).set({
                         name: this.signupForm.name,
                         title: this.signupForm.title
                     }).then(() => {
