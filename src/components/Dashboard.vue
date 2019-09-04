@@ -67,6 +67,7 @@
           </div>
         </div>
       </transition>
+       <!-- creer message -->
       <div class="col1">
         <div class="profile">
           <h5>{{ userProfile.name }}</h5>
@@ -80,6 +81,7 @@
           </div>
         </div>
       </div>
+      <!-- liste des messages -->
       <div class="col2">
         <transition name="fade">
           <div v-if="hiddenPosts.length" @click="showNewPosts" class="hidden-posts">
@@ -100,10 +102,10 @@
             <p>{{ post.content | trimLength }}</p>
             <ul>
               <li>
-                <a @click="openCommentModal(post)">commentaires: {{ post.comments }}</a>
+                <a @click="openCommentModal(post)" jest="show-comment-modal">commentaires: {{ post.comments }}</a>
               </li>
               <li>
-                <a @click="likePost(post.id, post.likes)">likes: {{ post.likes }}</a>
+                <a @click="likePost(post.id, post.likes)" > likes: {{ post.likes }}</a>
               </li>
               <li>
                 <a @click="viewPost(post)">voir la suite</a>
