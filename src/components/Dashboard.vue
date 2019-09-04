@@ -54,7 +54,7 @@
                 <a @click="openCommentModal(post)">commentaires: {{ post.comments }}</a>
               </li>
               <li>
-                <a>likes: {{ post.likes }}</a>
+                <a @click="likePost(post.id, post.likes)">likes: {{ post.likes }}</a>
               </li>
               <li>
                 <a>voir la suite</a>
@@ -149,6 +149,34 @@ export default {
             })
             .then(() => {
               this.closeCommentModal();
+            });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    likePost(postId, postLikes) {
+      let docId = `${this.currentUser.uid}_${postId}`;
+
+      fb.likesCollection
+        .doc(docId)
+        .get()
+        .then(doc => {
+          if (doc.exists) {
+            return;
+          }
+
+          fb.likesCollection
+            .doc(docId)
+            .set({
+              postId: postId,
+              userId: this.currentUser.uid
+            })
+            .then(() => {
+              // update post likes
+              fb.postsCollection.doc(postId).update({
+                likes: postLikes + 1
+              });
             });
         })
         .catch(err => {
