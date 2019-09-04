@@ -27,6 +27,9 @@
               <h5>{{ fullPost.userName }}</h5>
               <span>{{ fullPost.createdOn | formatDate }}</span>
               <p>{{ fullPost.content }}</p>
+              <p v-if="showDelPost">
+                <a @click="delPost(fullPost)">supprimer ce message</a>
+              </p>
               <ul>
                 <li>
                   <a>comments {{ fullPost.comments }}</a>
@@ -101,6 +104,7 @@
 <script>
 import { mapState } from "vuex";
 import moment from "moment";
+import router from "../router";
 const fb = require("../firebaseConfig.js");
 
 export default {
@@ -117,6 +121,7 @@ export default {
       },
       showCommentModal: false,
       showPostModal: false,
+      showDelPost: false,
       fullPost: {},
       postComments: []
     };
@@ -141,6 +146,24 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    delPost(post) {
+      this.$dialog
+      .confirm("êtes-vous sûr de vouloir supprimer ce message ?")
+      .then(() => {
+        fb.postsCollection
+          .doc(post.id)
+          .delete()
+          .then(() => {
+            this.showPostModal = false;
+          })
+          .catch(error => {
+            alert("Error removing document: ", error);
+          });
+        })
+        .catch(error => {
+            console.log(error);
+          });
     },
     showNewPosts() {
       let updatedPostsArray = this.hiddenPosts.concat(this.posts);
@@ -215,6 +238,9 @@ export default {
         });
     },
     viewPost(post) {
+      this.currentUser.uid === post.userId
+        ? (this.showDelPost = true)
+        : (this.showDelPost = false);
       fb.commentsCollection
         .where("postId", "==", post.id)
         .get()
