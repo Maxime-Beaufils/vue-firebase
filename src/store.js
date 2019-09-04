@@ -57,14 +57,14 @@ const store = new Vuex.Store({
     },
     updateProfile({
       commit,
-      state
+      state,
     }, data) {
-      let name = data.name
-      let title = data.title
+      const name = data.name;
+      const title = data.title;
 
       fb.usersCollection.doc(state.currentUser.uid).update({
         name,
-        title
+        title,
       }).then((user) => {
         // update all posts by user to reflect new name
         fb.postsCollection.where('userId', '==', state.currentUser.uid).get().then((docs) => {
@@ -107,8 +107,8 @@ fb.auth.onAuthStateChanged((user) => {
       }
 
       // add new posts to hiddenPosts array after initial load
-      if (querySnapshot.docChanges().length !== querySnapshot.docs.length &&
-        querySnapshot.docChanges()[0].type === 'added' && !createdByCurrentUser) {
+      if (querySnapshot.docChanges().length !== querySnapshot.docs.length
+      && querySnapshot.docChanges()[0].type === 'added' && !createdByCurrentUser) {
         const post = querySnapshot.docChanges()[0].doc.data();
         post.id = querySnapshot.docChanges()[0].doc.id;
 

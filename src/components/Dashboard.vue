@@ -27,9 +27,6 @@
               <h5>{{ fullPost.userName }}</h5>
               <span>{{ fullPost.createdOn | formatDate }}</span>
               <p>{{ fullPost.content }}</p>
-              <p v-if="showDelPost">
-                <a @click="delPost(fullPost)">supprimer ce message</a>
-              </p>
               <ul>
                 <li>
                   <a>comments {{ fullPost.comments }}</a>
@@ -38,14 +35,35 @@
                   <a>likes {{ fullPost.likes }}</a>
                 </li>
               </ul>
+              <ul>
+                <li v-if="showDelPost">
+                  <a @click="openEditModal(fullPost)">Modifier ce message</a>
+                </li>
+                <li v-if="showDelPost">
+                  <a @click="delPost(fullPost)">supprimer ce message</a>
+                </li>
+              </ul>
             </div>
             <div v-show="postComments.length" class="comments">
-              <div v-for="comment in postComments" class="comment">
+              <div v-for="comment in postComments" class="comment" :key="comment.id">
                 <p>{{ comment.userName }}</p>
                 <span>{{ comment.createdOn | formatDate }}</span>
                 <p>{{ comment.content }}</p>
               </div>
             </div>
+          </div>
+        </div>
+      </transition>
+      <!-- edit modal -->
+      <transition name="fade">
+        <div v-if="showEditModal" class="c-modal">
+          <div class="c-container">
+            <a @click="closeEditModal">X</a>
+            <p>Modifier ce message</p>
+            <form @submit.prevent>
+              <textarea v-model.lazy="fullPost.content"></textarea>
+              <button @click="editPost(fullPost)" class="button">Modifier</button>
+            </form>
           </div>
         </div>
       </transition>
@@ -76,7 +94,7 @@
           </div>
         </transition>
         <div v-if="posts.length">
-          <div v-for="post in posts" class="post">
+          <div v-for="post in posts" class="post" :key="post.id">
             <h5>{{ post.userName }}</h5>
             <span>{{ post.createdOn | formatDate }}</span>
             <p>{{ post.content | trimLength }}</p>
@@ -121,6 +139,7 @@ export default {
       },
       showCommentModal: false,
       showPostModal: false,
+      showEditModal: false,
       showDelPost: false,
       fullPost: {},
       postComments: []
@@ -149,21 +168,46 @@ export default {
     },
     delPost(post) {
       this.$dialog
-      .confirm("êtes-vous sûr de vouloir supprimer ce message ?")
-      .then(() => {
-        fb.postsCollection
-          .doc(post.id)
-          .delete()
-          .then(() => {
-            this.showPostModal = false;
-          })
-          .catch(error => {
-            alert("Error removing document: ", error);
-          });
+        .confirm("êtes-vous sûr de vouloir supprimer ce message ?")
+        .then(() => {
+          fb.postsCollection
+            .doc(post.id)
+            .delete()
+            .then(() => {
+              this.showPostModal = false;
+            })
+            .catch(error => {
+              alert("Error removing document: ", error);
+            });
         })
         .catch(error => {
-            console.log(error);
-          });
+          console.log(error);
+        });
+    },
+    editPost(post) {
+      fb.postsCollection
+        .doc(post.id)
+        .update({
+          content: post.content
+        })
+        .then(() => {
+          this.showEditModal = false;
+        })
+        .catch(error => {
+          alert("Error removing document: ", error);
+        });
+    },
+    openEditModal(post) {
+      this.comment.postId = post.id;
+      this.comment.userId = post.userId;
+      this.comment.postComments = post.comments;
+      this.showEditModal = true;
+    },
+    closeEditModal() {
+      this.comment.postId = "";
+      this.comment.userId = "";
+      this.comment.content = "";
+      this.showEditModal = false;
     },
     showNewPosts() {
       let updatedPostsArray = this.hiddenPosts.concat(this.posts);
