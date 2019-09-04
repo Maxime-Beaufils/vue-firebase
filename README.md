@@ -1,8 +1,8 @@
 # vue-firebase
 
 <p float="left">
-<img src="https://github.com/Maxime-Beaufils/vue-firebase/blob/master/img/ce1.jpg" width="270">
-<img src="https://github.com/Maxime-Beaufils/vue-firebase/blob/master/img/ce2.jpg" width="270">
+<img src="https://github.com/Maxime-Beaufils/vue-firebase/blob/master/img/ce2.jpg" width="420">
+<img src="https://github.com/Maxime-Beaufils/vue-firebase/blob/master/img/ce1.jpg" width="420">
 </p>
 
 ## Project setup
