@@ -1,18 +1,18 @@
 # vue-firebase
 Projet de veille technique : 
 
-# Projet vue.js
-Gestion des states avec VueX.
-Gestion des routes avec Vue-router.
-Authentification avec Firebase.
-CRUD d'une basse de donnée cloud firestore.
+## Projet vue.js
+Gestion des states avec VueX.  
+Gestion des routes avec Vue-router.  
+Authentification avec Firebase.  
+CRUD d'une basse de donnée cloud firestore.  
 
-# Feature: 
-Création d'un compte.
-Editer son profil.
-Créer, éditer, supprimer un message.
-Poster un commentaire.
-Liker un message.
+## Feature: 
+Création d'un compte.  
+Editer son profil.  
+Créer, éditer, supprimer un message.  
+Poster un commentaire.  
+Liker un message.  
 
 <p float="left">
 <img src="https://github.com/Maxime-Beaufils/vue-firebase/blob/master/img/ce2.jpg" width="600">
