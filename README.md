@@ -1,7 +1,7 @@
 # vue-firebase
 
 <p float="left">
-<img src="https://github.com/Maxime-Beaufils/vue-firebase/blob/master/img/ce2.jpg" width="600">< /br>
+<img src="https://github.com/Maxime-Beaufils/vue-firebase/blob/master/img/ce2.jpg" width="600">
 <img src="https://github.com/Maxime-Beaufils/vue-firebase/blob/master/img/ce1.jpg" width="600">
 </p>
 
