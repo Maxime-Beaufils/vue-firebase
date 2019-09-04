@@ -1,5 +1,10 @@
 # vue-firebase
 
+<p float="left">
+<img src="https://github.com/Maxime-Beaufils/vue-firebase/tree/master/img/ce1.jpg" width="270">
+<img src="https://github.com/Maxime-Beaufils/vue-firebase/tree/master/img/ce2.jpg" width="270">
+</p>
+
 ## Project setup
 ```
 npm install
